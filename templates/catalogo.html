@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Catálogo de productos | Nexo{% endblock %}
+{% block breadcrumb %}Catálogo de productos{% endblock %}
+
+{% block content %}
+<section class="catalog-heading">
+    <div>
+        <div class="eyebrow"><span class="eyebrow-line"></span> INVENTARIO</div>
+        <h1>Catálogo de <span>productos.</span></h1>
+        <p class="lead">Todos tus productos, con existencias y precios en un solo lugar.</p>
+    </div>
+    <div class="catalog-count"><strong>{{ total_productos }}</strong><span>productos<br>registrados</span></div>
+</section>
+
+<section class="catalog-summary">
+    <div><span class="summary-dot"></span><span><strong>{{ productos_disponibles }}</strong> con stock disponible</span></div>
+    <span class="summary-date">Consulta: {{ fecha_actual|date:"d/m/Y" }}</span>
+</section>
+
+<section class="table-card" aria-label="Listado de productos">
+    <div class="table-scroll">
+        <table>
+            <thead><tr><th>PRODUCTO</th><th>DESCRIPCIÓN</th><th>PRECIO</th><th>STOCK</th><th>REGISTRADO</th></tr></thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr>
+                    <td><div class="table-product"><span class="product-symbol small-symbol">{{ producto.nombre|first|upper }}</span><strong>{{ producto.nombre|title }}</strong></div></td>
+                    <td class="description-cell">{{ producto.descripcion|truncatewords:12 }}</td>
+                    <td class="price-cell">S/ {{ producto.precio|floatformat:2 }}</td>
+                    <td>{% if producto.stock > 0 %}<span class="stock-pill stock-ok"><span></span>{{ producto.stock }} unidades</span>{% else %}<span class="stock-pill stock-empty"><span></span>Sin stock</span>{% endif %}</td>
+                    <td class="date-cell">{{ producto.fecha_registro|date:"d/m/Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5"><div class="empty-state table-empty"><span class="empty-icon">▦</span><strong>El catálogo está vacío</strong><p>Agrega productos con el ORM de Django para verlos aquí.</p></div></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="table-footer"><span>Mostrando <strong>{{ productos|length }}</strong> de <strong>{{ total_productos }}</strong> productos</span><span>Ordenado alfabéticamente</span></div>
+</section>
+
+<div class="catalog-note"><span>i</span><p>Los datos se consultan desde SQLite mediante el ORM de Django.</p></div>
+{% endblock %}

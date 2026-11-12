@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Resumen | Nexo{% endblock %}
+{% block breadcrumb %}Resumen{% endblock %}
+
+{% block content %}
+<section class="welcome-row">
+    <div>
+        <div class="eyebrow"><span class="eyebrow-line"></span> PANEL DE CONTROL</div>
+        <h1>Todo en orden,<br><span>todo a la vista.</span></h1>
+        <p class="lead">Consulta el inventario y mantén tus productos organizados desde un solo lugar.</p>
+    </div>
+    <div class="welcome-graphic" aria-hidden="true">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="graphic-card"><span class="graphic-spark">✳</span><span>Inventario<br><strong>simplificado</strong></span></div>
+        <span class="graphic-dot dot-one"></span><span class="graphic-dot dot-two"></span>
+    </div>
+</section>
+
+<section class="stats-grid" aria-label="Resumen del inventario">
+    <article class="stat-card stat-primary">
+        <div class="stat-top"><span class="stat-label">PRODUCTOS REGISTRADOS</span><span class="stat-icon">▦</span></div>
+        <div class="stat-value">{{ total_productos }}</div>
+        <div class="stat-foot"><span class="stat-accent"></span>Elementos en tu catálogo</div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-top"><span class="stat-label">BASE DE DATOS</span><span class="stat-icon icon-green">◉</span></div>
+        <div class="stat-value stat-word">SQLite</div>
+        <div class="stat-foot"><span class="status-dot"></span>Conexión local activa</div>
+    </article>
+    <article class="stat-card">
+        <div class="stat-top"><span class="stat-label">FECHA DE CONSULTA</span><span class="stat-icon icon-gold">◷</span></div>
+        <div class="stat-value stat-date">{{ fecha_actual|date:"d/m/Y" }}</div>
+        <div class="stat-foot"><span class="stat-accent accent-gold"></span>Información actualizada</div>
+    </article>
+</section>
+
+<section class="section-heading">
+    <div><div class="eyebrow">VISTA RÁPIDA</div><h2>Últimos productos</h2></div>
+    <a class="text-link" href="{% url 'catalogo' %}">Ver catálogo completo <span>↗</span></a>
+</section>
+
+<section class="preview-grid">
+    {% for producto in productos_destacados %}
+    <article class="preview-card">
+        <div class="product-symbol">{{ producto.nombre|first|upper }}</div>
+        <div class="preview-info"><h3>{{ producto.nombre|title }}</h3><p>{{ producto.descripcion|truncatewords:10 }}</p></div>
+        <div class="preview-price">S/ {{ producto.precio|floatformat:2 }}</div>
+    </article>
+    {% empty %}
+    <div class="empty-state"><span class="empty-icon">▦</span><strong>Aún no hay productos</strong><p>Los productos registrados aparecerán aquí.</p></div>
+    {% endfor %}
+</section>
+
+<section class="tip-banner">
+    <div class="tip-icon">✦</div>
+    <div><strong>Tu catálogo, siempre organizado</strong><p>Consulta existencias, precios y fechas de registro en una vista clara.</p></div>
+    <a class="button button-dark" href="{% url 'catalogo' %}">Explorar catálogo <span>→</span></a>
+</section>
+{% endblock %}
